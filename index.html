@@ -95,6 +95,8 @@ footer .script{font-size:2rem;color:var(--pink-d)}
 .langbar{position:fixed;top:10px;right:10px;z-index:60;display:flex;background:#ffffffe6;border:1px solid var(--gold-l);border-radius:30px;padding:3px;box-shadow:0 4px 14px #c2506f22;backdrop-filter:blur(6px)}
 .langbar button{border:0;background:transparent;padding:6px 14px;border-radius:26px;font:500 .8rem 'Noto Serif Gujarati','Poppins',sans-serif;color:var(--ink);cursor:pointer}
 .langbar button.on{background:linear-gradient(135deg,#c2506f,#9c3556);color:#fff}
+.share-wrap{display:none}
+.share-wrap.visible{display:contents}
 .lang-en .gu,.lang-en h2,.lang-en h3,.lang-en h4,.lang-en .wish{font-family:Georgia,'Times New Roman',serif}
 .hero{padding-top:64px}
 </style>
@@ -209,8 +211,8 @@ footer .script{font-size:2rem;color:var(--pink-d)}
   </div>
   <div class="btns" style="margin-top:26px">
     <a class="btn alt" id="rsvp" target="_blank" rel="noopener" href="#" data-i18n="rsvpBtn">&#9989; Confirm Your Presence (RSVP)</a>
-    <button class="btn wa" id="share" data-i18n="shareBtn">&#128228; Share on WhatsApp</button>
-    <button class="btn alt" id="copy" data-i18n="copyBtn">&#128279; Copy Link</button>
+    <span class="share-wrap" id="shareWrap"><button class="btn wa" id="share" data-i18n="shareBtn">&#128228; Share on WhatsApp</button>
+    <button class="btn alt" id="copy" data-i18n="copyBtn">&#128279; Copy Link</button></span>
   </div>
 </section>
 
@@ -293,6 +295,12 @@ const T = {
 };
 
 const params = new URLSearchParams(location.search);
+// ===== Special link: show share/copy only if ?admin=ravi1234 =====
+const ADMIN_KEY = 'ravi1234';
+if (params.get('admin') === ADMIN_KEY) {
+  const sw = document.getElementById('shareWrap');
+  if (sw) sw.classList.add('visible');
+}
 const guest = (params.get('name') || '').trim().slice(0, 40);
 let lang = params.get('lang');
 if (lang !== 'gu' && lang !== 'en') { try { lang = localStorage.getItem('lang'); } catch (e) {} }
